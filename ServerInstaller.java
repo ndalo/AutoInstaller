@@ -19,12 +19,6 @@ public class ServerInstaller {
         gui.show();
     }
 
-    public static void mainLoop() {
-        log("Step 1");
-        log("Step 2");
-        log("Done");
-    }
-
     public static void installNotepad() {
         try {
             boolean notepadIsInstalled = false;
