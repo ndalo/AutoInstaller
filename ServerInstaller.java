@@ -6,8 +6,7 @@ import javax.swing.*;
 import org.apache.commons.io.*;
 
 /**
- *
- * @author Nate Dalo, JDS Solutions 2014
+ * @author Nate Dalo, JDS Solutions 2014 Nate@jdssc.com
  */
 public class ServerInstaller {
 
@@ -18,7 +17,8 @@ public class ServerInstaller {
         ServerGUI gui = new ServerGUI();
         gui.show();
     }
-
+    
+    /** Performs an unattended install of Notepad++ */
     public static void installNotepad() {
         try {
             boolean notepadIsInstalled = false;
@@ -45,7 +45,8 @@ public class ServerInstaller {
             log(ex.toString());
         }
     }
-
+    
+    /** Performs an unattended install of 7Zip */
     public static void install7Zip() {
         try {
             boolean SevenZipIsInstalled = false;
@@ -79,12 +80,12 @@ public class ServerInstaller {
             log(ex.toString());
         }
     }
-
+    /** Performs an unattended install of SQL Server 2012 */
     public static void installSQL2012() {
         log("Installing SQL Server 2012...");
         log("Not implemented yet...");
     }
-
+    /** Simple logging function */
     public static void log(String str) {
         System.out.println(str);
         File logDir = new File("c:\\jdslog");
@@ -102,7 +103,8 @@ public class ServerInstaller {
             log(e.toString());
         }
     }
-
+    /** executeProcess can execute a process, passing in input parameters 
+        as necessary and then waits for the process to complete */
     public static void executeProcess(String command, String inputValues, String errorMessage) {
         try {
             String[] splitString = command.split(" ");
