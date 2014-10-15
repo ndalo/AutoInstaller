@@ -9,8 +9,7 @@ import org.apache.commons.io.*;
  * @author Nate Dalo, JDS Solutions 2014 Nate@jdssc.com
  */
 public class ServerInstaller {
-
-    public static int guiStatus = 0;
+    
     public static String installPath = "";
 
     public static void main(String[] args) {
@@ -127,7 +126,6 @@ public class ServerInstaller {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, errorMessage);
             log(errorMessage);
-            ex.printStackTrace();
             log(ex.toString());
             System.exit(0);
         }
