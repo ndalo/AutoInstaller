@@ -1,8 +1,9 @@
 package serverinstaller;
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 import javax.swing.*;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import org.apache.commons.io.*;
 
 /**
@@ -14,6 +15,7 @@ public class ServerInstaller {
 
     public static void main(String[] args) {
         ServerGUI gui = new ServerGUI();
+        gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
         gui.show();
     }
     
