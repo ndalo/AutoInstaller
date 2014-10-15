@@ -10,9 +10,13 @@ import org.apache.commons.io.*;
  * @author Nate Dalo, JDS Solutions 2014 Nate@jdssc.com
  */
 public class ServerInstaller {
-    
+
     public static String installPath = "";
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         ServerGUI gui = new ServerGUI();
         gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -38,7 +42,6 @@ public class ServerInstaller {
                     notepadIsInstalled = true;
                 }
             }
-
             if (!notepadIsInstalled) {
                 log("Notepad++ could not be found!");
             }
@@ -86,7 +89,8 @@ public class ServerInstaller {
         log("Installing SQL Server 2012...");
         log("Not implemented yet...");
     }
-    /** Simple logging function */
+    /** Simple logging function
+     * @param str - String to log*/
     public static void log(String str) {
         System.out.println(str);
         File logDir = new File("c:\\jdslog");
@@ -97,15 +101,18 @@ public class ServerInstaller {
             File f = new File("c:\\jdslog\\jds-serverinstall.log");
             f.createNewFile();
 
-            PrintWriter pw = new PrintWriter(new FileOutputStream(f, true));
-            pw.append(new Date().toString() + " -> " + str + "\n");
-            pw.close();
+            try (PrintWriter pw = new PrintWriter(new FileOutputStream(f, true))) {
+                pw.append(new Date().toString() + " -> " + str + "\n");
+            }
         } catch (IOException e) {
             log(e.toString());
         }
     }
     /** executeProcess can execute a process, passing in input parameters 
-        as necessary and then waits for the process to complete */
+        as necessary and then waits for the process to complete
+     * @param command - Process to execute
+     * @param inputValues - Input parameters for process (i.e. questions asked)
+     * @param errorMessage - Error to display in case of failure */
     public static void executeProcess(String command, String inputValues, String errorMessage) {
         try {
             String[] splitString = command.split(" ");
@@ -125,12 +132,11 @@ public class ServerInstaller {
                 out.close();
             }
             p.waitFor();
-        } catch (Exception ex) {
+        } catch (IOException | InterruptedException ex) {
             JOptionPane.showMessageDialog(null, errorMessage);
             log(errorMessage);
             log(ex.toString());
             System.exit(0);
         }
     }
-
 }
