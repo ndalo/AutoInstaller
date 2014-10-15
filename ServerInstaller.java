@@ -12,11 +12,7 @@ import org.apache.commons.io.*;
 public class ServerInstaller {
 
     public static String installPath = "";
-
-    /**
-     *
-     * @param args
-     */
+    
     public static void main(String[] args) {
         ServerGUI gui = new ServerGUI();
         gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
