@@ -1,6 +1,6 @@
 package serverinstaller;
 
-import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -11,6 +11,7 @@ public class ServerGUI extends javax.swing.JFrame {
     /**
      * Creates new form ServerGUI
      */
+	FileNameExtensionFilter cipherFilter;
     public ServerGUI() {
         initComponents();
     }
@@ -23,7 +24,7 @@ public class ServerGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+    	cipherFilter = new FileNameExtensionFilter("conf", "conf", "conf");
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
@@ -187,6 +188,60 @@ public class ServerGUI extends javax.swing.JFrame {
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jTabbedPane1)
         );
+        
+        Jpanel8 = new JPanel();
+        jTabbedPane1.addTab("Ciphers", null, Jpanel8, null);
+        
+        txtLocationOfGenkeysconf = new JTextField();
+        txtLocationOfGenkeysconf.setText("Location of gen-keys.conf");
+        
+        CiphersBrowseButton = new JButton();
+        CiphersBrowseButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		ciphersBrowse(e);
+        	}
+        });
+        CiphersBrowseButton.setText("Browse...");
+        
+        CiphersCreateButton = new JButton();
+        CiphersCreateButton.setText("Create");
+        
+        //action listener for button to create ciphers
+        CiphersCreateButton.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		ciphersCreate(e);
+        	}
+        });
+        
+        GroupLayout gl_Jpanel8 = new GroupLayout(Jpanel8);
+        gl_Jpanel8.setHorizontalGroup(
+        	gl_Jpanel8.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_Jpanel8.createSequentialGroup()
+        			.addGroup(gl_Jpanel8.createParallelGroup(Alignment.LEADING)
+        				.addGroup(gl_Jpanel8.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(txtLocationOfGenkeysconf, GroupLayout.PREFERRED_SIZE, 472, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(CiphersBrowseButton, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(gl_Jpanel8.createSequentialGroup()
+        					.addGap(203)
+        					.addComponent(CiphersCreateButton, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)))
+        			.addContainerGap(158, Short.MAX_VALUE))
+        );
+        gl_Jpanel8.setVerticalGroup(
+        	gl_Jpanel8.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_Jpanel8.createSequentialGroup()
+        			.addGap(19)
+        			.addGroup(gl_Jpanel8.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(txtLocationOfGenkeysconf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(CiphersBrowseButton))
+        			.addGap(51)
+        			.addComponent(CiphersCreateButton)
+        			.addContainerGap(320, Short.MAX_VALUE))
+        );
+        Jpanel8.setLayout(gl_Jpanel8);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -218,8 +273,9 @@ public class ServerGUI extends javax.swing.JFrame {
                     + chooser.getCurrentDirectory());
             System.out.println("getSelectedFile() : "
                     + chooser.getSelectedFile());
-            jTextField1.setText(chooser.getSelectedFile().toString());
-            ServerInstaller.installPath = chooser.getSelectedFile().toString();
+            txtLocationOfGenkeysconf.setText(chooser.getSelectedFile().toString());
+            //add action to be performed
+            System.out.println("test");
         } else {
             System.out.println("No Selection ");
         }
@@ -239,6 +295,33 @@ public class ServerGUI extends javax.swing.JFrame {
             ServerInstaller.installSQL2012();
         }
     }//GEN-LAST:event_button1ActionPerformed
+    
+    private void ciphersBrowse(java.awt.event.ActionEvent e) 
+    {
+        String choosertitle = "Choose file";
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle(choosertitle);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setFileFilter(cipherFilter);
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            System.out.println("getCurrentDirectory(): "
+                    + chooser.getCurrentDirectory());
+            System.out.println("getSelectedFile() : "
+                    + chooser.getSelectedFile());
+            txtLocationOfGenkeysconf.setText(chooser.getSelectedFile().toString());   
+        } 
+        else 
+        {
+            System.out.println("No Selection ");
+        }
+    }
+    
+    private void ciphersCreate(ActionEvent e)
+    {
+    	String confFile = txtLocationOfGenkeysconf.getText();
+    	Ciphers ciphers = new Ciphers(confFile);
+    }
 
     /**
      * @param args the command line arguments
@@ -286,5 +369,9 @@ public class ServerGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
+    private JPanel Jpanel8;
+    private JTextField txtLocationOfGenkeysconf;
+    private JButton CiphersBrowseButton;
+    private JButton CiphersCreateButton;
     // End of variables declaration//GEN-END:variables
 }
