@@ -1,0 +1,137 @@
+package serverinstaller;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+public class Ciphers 
+{
+	String contents;
+	FileReader fileReader;
+	String fileLocation;
+	PrintWriter printWriter;
+	BufferedReader bufferedReader;
+	File file;
+	ArrayList<String> array;
+	ShellCommand run;
+	public Ciphers(String fileLocation)
+	{
+		//shell command used to run gen-keys to create ciphers
+		run = new ShellCommand("c:\\genkeys\\gen-keys.bat");
+		this.fileLocation = fileLocation;
+		array = new ArrayList<String>();
+		
+		//load the file
+		try {
+			fileReader = new FileReader(fileLocation);
+		} catch (FileNotFoundException e) {
+			System.out.println("cant find file " + fileLocation);
+			e.printStackTrace();
+		}
+		
+		//convert file reader to Buffered Reader for editing
+		bufferedReader = new BufferedReader(fileReader);		
+		try {
+			while ((contents = bufferedReader.readLine()) != null)
+			{
+				array.add(contents);
+			}
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}
+		//close the file
+		try {
+			fileReader.close();
+		} catch (IOException e) {
+			System.out.println("Error closing file.");
+			e.printStackTrace();
+		}		
+		//initialize the file to be written to
+		file = new File(fileLocation);
+		try {
+			printWriter = new PrintWriter(file);
+		} catch (FileNotFoundException e) {
+			System.out.println("cant load file " + fileLocation);
+			e.printStackTrace();
+		}
+		//addAll to comment out all lines of text
+		addAll();		
+		//uncomment the initial ciphers
+		firstRun();
+		
+		//write the file with the initial ciphers uncommented
+		for(int i = 0; i < array.size(); i++)
+		{
+			printWriter.print(array.get(i) + "\n");
+		}
+		printWriter.close();		
+		//execute the batch file to create initial ciphers
+		run.execute();
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e1) {
+			System.out.println("Error sleeping");
+			e1.printStackTrace();
+		}		
+		try {
+			printWriter = new PrintWriter(file);
+		} catch (FileNotFoundException e) {
+			System.out.println("cant find file " + fileLocation);
+			e.printStackTrace();
+		}		
+		//comment out all lines of code
+		addAll();		
+		//uncomment lines for credit ciphers
+		secondRun();		
+		//print the document for the credit ciphers
+		for(int i = 0; i < array.size(); i++)
+			printWriter.print(array.get(i) + "\n");	
+		printWriter.close();			
+		//run the batch file to create the credit cipher
+		run.execute();
+	}	
+	//comments out first 40 lines of document
+	private void addAll()
+	{
+		for(int i = 0; i < 40; i++)
+		{
+			if(!array.get(i).startsWith("#"))
+			{				
+				StringBuilder s = new StringBuilder("#");
+				s.append(array.get(i));
+				String string = s.toString();
+				array.set(i, string);								
+			}
+		}
+	}	
+	//Uncomment lines for initial ciphers
+	private void firstRun()
+	{
+		StringBuilder s = new StringBuilder(array.get(21));
+		s.delete(0, 1);
+		String string = s.toString();
+		array.set(21, string);		
+	}
+	//Uncomment lines for credit ciphers
+	private void secondRun()
+	{
+		for(int i = 35; i <= 38; i++)
+		{
+			StringBuilder s = new StringBuilder(array.get(i));
+			s.delete(0, 1);
+			if(i == 38)
+			{
+				char j = s.charAt(27);				
+				j++;
+				s.delete(27, 28);
+				s.insert(27, j);
+			}
+			String string = s.toString();
+			array.set(i, string);
+		}
+	}
+}
